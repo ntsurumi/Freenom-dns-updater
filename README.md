@@ -97,6 +97,7 @@ Where the params are :
 
 
 ## Docker image (multiarch)
+[![](https://images.microbadger.com/badges/version/whatever4711/freenom:amd64-latest.svg)](https://microbadger.com/images/whatever4711/freenom:amd64-latest "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/version/whatever4711/freenom:amd64-latest.svg)](https://microbadger.com/images/whatever4711/freenom:amd64-latest "Get your own version badge on microbadger.com")
 ### Start fdu
 Start fdu by calling ```docker run whatever4711/freenom:amd64-latest```, which executes all previous commands inside a container.
 
