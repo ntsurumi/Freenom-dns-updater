@@ -1,6 +1,5 @@
 FROM armhf/python:3.6-alpine
 
-COPY tmp/qemu-arm-static /usr/bin/qemu-arm-static
 ADD . /usr/src/app
 WORKDIR /usr/src/app
 RUN apk add --update --no-cache tini && \
