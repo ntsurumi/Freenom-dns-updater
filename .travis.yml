@@ -12,6 +12,6 @@ script:
 - tar xzf qemu-arm-static.tar.gz
 - popd
 # build image
-- docker build -t freenom Dockerfile.arm
+- docker build -t freenom -f Dockerfile.arm .
 # test image
 - docker run freenom uname -a
