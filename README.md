@@ -1,4 +1,4 @@
-
+[![Build Status](https://travis-ci.org/whatever4711/Freenom-dns-updater.svg?branch=master)](https://travis-ci.org/whatever4711/Freenom-dns-updater)
 
 # Freenom dns updater
 A tool written in python to update [freenom](http://Freenom.com)'s dns records
