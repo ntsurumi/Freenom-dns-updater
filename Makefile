@@ -17,7 +17,7 @@ else
 	endif
 endif
 
-all: amd64 #$(ARCHITECTURES)
+all: amd64 $(ARCHITECTURES)
 
 $(ARCHITECTURES):
 	@mkdir -p $(TMP_DIR)
@@ -36,7 +36,7 @@ amd64:
 
 push:
 	@docker login -u $(DOCKER_USER) -p $(DOCKER_PASS)
-	@$(foreach arch,$(ARCHITECTURES),docker push $(REPO)/$(arch)-$(TAG))
+	@$(foreach arch,$(ARCHITECTURES) amd64,docker push $(REPO)/$(arch)-$(TAG))
 	@docker logout
 
 clean:
