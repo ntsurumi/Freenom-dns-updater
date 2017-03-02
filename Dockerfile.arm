@@ -3,7 +3,9 @@ FROM armhf/python:3.6-alpine
 COPY tmp/qemu-arm-static /usr/bin/qemu-arm-static
 ADD . /usr/src/app
 WORKDIR /usr/src/app
-RUN pip install --no-cache-dir -r requirements.txt && \
+RUN apk add --update --no-cache tini && \
+    pip install --no-cache-dir -r requirements.txt && \
     python setup.py install
 
-CMD fdu --help
+ENTRYPOINT ["tini", "--", "fdu"]
+CMD ["--help"]
