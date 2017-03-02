@@ -16,7 +16,5 @@ script:
 # build image
 - docker build -t freenom:armhf -f Dockerfile.arm .
 # test image
-- docker run freenom:amd64 uname -a
 - docker run freenom:amd64 --version
-- docker run freenom:armhf uname -a
 - docker run freenom:armhf --version
