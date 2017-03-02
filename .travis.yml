@@ -3,6 +3,8 @@ services:
 - docker
 language: bash
 script:
+# build 64bit image first
+- docker build -t freenom:amd64 -f Dockerfile.amd64 .
 # prepare qemu
 - docker run --rm --privileged multiarch/qemu-user-static:register --reset
 # get qemu-arm-static binary
@@ -12,6 +14,9 @@ script:
 - tar xzf qemu-arm-static.tar.gz
 - popd
 # build image
-- docker build -t freenom -f Dockerfile.arm .
+- docker build -t freenom:armhf -f Dockerfile.arm .
 # test image
-- docker run freenom uname -a
+- docker run freenom:amd64 uname -a
+- docker run freenom:amd64
+- docker run freenom:armhf uname -a
+- docker run freenom:armhf
