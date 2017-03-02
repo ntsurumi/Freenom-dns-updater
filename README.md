@@ -10,10 +10,6 @@ A tool written in python to update [freenom](http://Freenom.com)'s dns records
 ## Upcoming features
 * Auto renew domains
 
-## Installation
-```bash
-pip install freenom-dns-updater
-```
 ## Usage
 
 ### Basic usage
@@ -100,42 +96,22 @@ Where the params are :
 
 
 
-### Using systemd
-For ease of use a systemd unit file is available along the source code.
-- Save your configuration into ```/etc/freenom.yml```
-- Copy the ```systemd/system/freenom-dns-updater.service``` into a valid systemd unit folder (```/usr/lib/systemd/system/``` for instance).  
-- finally enable the service using
+## Docker image (multiarch)
+### Start fdu
+Start fdu by calling ```docker run whatever4711/freenom:amd64-latest```, which executes all previous commands inside a container.
+
+### Docker compose
+
+```YAML
+version: '3'
+services:
+  freenom:
+    image: whatever4711/freenom:amd64-latest
+    restart: always
+    volumes:
+      - /your/path/to/freenom.yml:/etc/freenom.yml
+    command: ["process", "-c", "-t", "3600", "/etc/freenom.yml"]
 ```
-systemctl enable freenom-dns-updater
-systemctl start freenom-dns-updater
-```
-
-
-### Using other Os / services manager
-There's two straightforward choices :  
-- Launch the previous ```fdu process``` command
-- Schedule the ```fdu update``` command using cron, windows' scheduled task, ...
-
-
-## Docker image
-[![Docker layers](https://badge.imagelayers.io/maxisoft/freenom-dns-updater:latest.svg)](https://imagelayers.io/?images=maxisoft/freenom-dns-updater:latest)
-
-If you want to run this tool in an isolated environment there's a docker image available at
-[maxisoft/freenom-dns-updater](https://hub.docker.com/r/maxisoft/freenom-dns-updater/)
 
 ### Ipv6
 Note that if you want to use the ipv6 functionality, you have to enable the [docker ipv6 stack](https://docs.docker.com/v1.5/articles/networking/#ipv6)
-
-### Examples
-- Update dns records using a gist config file :
-```bash
-docker run -it --rm maxisoft/freenom-dns-updater-armhf fdu update https://gist.githubusercontent.com/maxisoft/1b979b64e4cf5157d58d/raw/freenom.yml
-```
-- Run the tool in a background docker with a local config file :  
-```bash
-docker run -d --rm -v /path/to/config:/etc/freenom.yml maxisoft/freenom-dns-updater-armhf
-```
-
-### For armhf
-There's also an image for armhf (raspberry pi for instance) available at
-[maxisoft/freenom-dns-updater-armhf](https://hub.docker.com/r/maxisoft/freenom-dns-updater-armhf)
