@@ -24,3 +24,5 @@ after_success:
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo "TRAVIS_BRANCH; fi"`
   - docker tag freenom:amd64 $REPO:amd64-$TAG
   - docker tag freenom:armhf $REPO:armhf-$TAG
+  - docker push $REPO:amd64-$TAG
+  - docker push $REPO:armhf-$TAG
