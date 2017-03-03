@@ -1,6 +1,9 @@
 FROM <IMAGE>
 <QEMU>
 
+ENV ARCH=<ARCH> \
+    FDU_VERSION="1.0"
+
 ADD . /usr/src/app
 WORKDIR /usr/src/app
 RUN apk add --update --no-cache tini && \
@@ -9,3 +12,7 @@ RUN apk add --update --no-cache tini && \
 
 ENTRYPOINT ["tini", "--", "fdu"]
 CMD ["--help"]
+
+LABEL version=${FDU_VERSION} \
+    architecture=${ARCH} \
+    maintainer="whatever4711@gmail.com"
