@@ -17,11 +17,12 @@ RUN apk add --update --no-cache tini && \
 ENTRYPOINT ["tini", "--", "fdu"]
 CMD ["--help"]
 
-LABEL org.label-schema.version=${VERSION} \
+LABEL org.label-schema.version=$VERSION \
     org.label-schema.name="Freenom DNS Updater" \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=$VCS_URL \
     org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.schema-version="1.0" \
     org.label-schema.docker.cmd="docker run -d  whatever4711/freenom:amd64-latest" \
-    org.label-schema.vendor="Marcel Grossmann"
+    org.label-schema.vendor="Marcel Grossmann" \
+    org.label-schema.architecture=$ARCH

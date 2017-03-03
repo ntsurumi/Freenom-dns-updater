@@ -29,7 +29,7 @@ $(ARCHITECTURES):
 		Dockerfile.generic > $(TMP_DOCKERFILE)
 	@sed -i -e "s|amd64/$(IMAGE)|$(IMAGE)|g" $(TMP_DOCKERFILE)
 	@docker run --rm --privileged $(MULTIARCH) --reset
-	docker build --build-arg BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ") \
+	@docker build --build-arg BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ") \
 		--build-arg VCS_REF=$(shell git rev-parse --short HEAD) \
 		--build-arg VCS_URL=$(shell git config --get remote.origin.url) \
 		--build-arg VERSION="1.0" \
