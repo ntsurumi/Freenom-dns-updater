@@ -5,7 +5,6 @@ language: bash
 script:
   - export REPO=whatever4711/freenom
   - make all
-  - docker images
 
 after_success:
   - docker images
