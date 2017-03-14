@@ -98,7 +98,9 @@ Where the params are :
 
 ## Docker image (multiarch)
 [![](https://images.microbadger.com/badges/version/whatever4711/freenom:amd64-latest.svg)](https://microbadger.com/images/whatever4711/freenom:amd64-latest "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/whatever4711/freenom:amd64-latest.svg)](https://microbadger.com/images/whatever4711/freenom:amd64-latest "Get your own image badge on microbadger.com") [![](https://images.microbadger.com/badges/commit/whatever4711/freenom:amd64-latest.svg)](https://microbadger.com/images/whatever4711/freenom:amd64-latest "Get your own commit badge on microbadger.com")
+
 [![](https://images.microbadger.com/badges/version/whatever4711/freenom:armhf-latest.svg)](https://microbadger.com/images/whatever4711/freenom:armhf-latest "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/whatever4711/freenom:armhf-latest.svg)](https://microbadger.com/images/whatever4711/freenom:armhf-latest "Get your own image badge on microbadger.com") [![](https://images.microbadger.com/badges/commit/whatever4711/freenom:armhf-latest.svg)](https://microbadger.com/images/whatever4711/freenom:armhf-latest "Get your own commit badge on microbadger.com")
+
 [![](https://images.microbadger.com/badges/version/whatever4711/freenom:aarch64-latest.svg)](https://microbadger.com/images/whatever4711/freenom:aarch64-latest "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/whatever4711/freenom:aarch64-latest.svg)](https://microbadger.com/images/whatever4711/freenom:aarch64-latest "Get your own image badge on microbadger.com") [![](https://images.microbadger.com/badges/commit/whatever4711/freenom:aarch64-latest.svg)](https://microbadger.com/images/whatever4711/freenom:aarch64-latest "Get your own commit badge on microbadger.com")
 
 ### Start fdu
