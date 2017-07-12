@@ -103,6 +103,11 @@ Where the params are :
 
 [![](https://images.microbadger.com/badges/version/whatever4711/freenom:aarch64-latest.svg)](https://microbadger.com/images/whatever4711/freenom:aarch64-latest "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/whatever4711/freenom:aarch64-latest.svg)](https://microbadger.com/images/whatever4711/freenom:aarch64-latest "Get your own image badge on microbadger.com") [![](https://images.microbadger.com/badges/commit/whatever4711/freenom:aarch64-latest.svg)](https://microbadger.com/images/whatever4711/freenom:aarch64-latest "Get your own commit badge on microbadger.com")
 
+
+## Known issues
+- The domain [my.freenom.com](my.freenom.com) has [SSL Chain issues](https://www.ssllabs.com/ssltest/analyze.html?d=my.freenom.com). For now this tool use a custom ``chain.pem`` to avoid ssl errors.
+>>>>>>> 59e09ff8f12ef0baadfdac37b8ebbe7cf445c98f
+
 ### Start fdu
 Start fdu by calling ```docker run whatever4711/freenom:amd64-latest```, which executes all previous commands inside a container.
 
