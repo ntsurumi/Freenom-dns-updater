@@ -29,12 +29,12 @@ class Freenom(object):
             return str(p)
         return None
 
-    def login(self, login, password, url="https://my.freenom.com/dologin.php"):
+    def login(self, login, password, url="https://my.freenom.com/clientarea.php"):
         token = self._get_login_token()
         playload = {'token': token,
                     'username': login,
                     'password': password}
-        r = self.session.post(url, playload)
+        r = self.session.post(url, playload, headers={'Host': 'my.freenom.com', 'Referer': 'https://myfreenom.com/clientarea.php'})
         assert r, "couldn't get %s" % url
         return self.is_logged_in(r)
 
