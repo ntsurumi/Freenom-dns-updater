@@ -29,7 +29,7 @@ class Freenom(object):
             return str(p)
         return None
 
-    def login(self, login, password, url="https://my.freenom.com/clientarea.php"):
+    def login(self, login, password, url="https://my.freenom.com/dologin.php"):
         token = self._get_login_token()
         playload = {'token': token,
                     'username': login,
