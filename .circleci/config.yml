@@ -114,7 +114,7 @@ workflows:
       - build_arm64v8:
           <<: *tag_filter
       - build_ppc64le:
-          <<: *tag_filter#
+          <<: *tag_filter
       - build_s390x:
           <<: *tag_filter
       - manifest:
