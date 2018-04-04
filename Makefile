@@ -1,49 +1,62 @@
-ARCHITECTURES = amd64 armhf aarch64
-QEMU_STATIC = https://github.com/multiarch/qemu-user-static/releases/download/v2.8.0
-IMAGE = python:3.6-alpine
+ARCHITECTURES = amd64 i386 arm32v6 arm64v8 ppc64le s390x
+IMAGE_TARGET = alpine
 MULTIARCH = multiarch/qemu-user-static:register
-TMP_DIR = tmp
-TMP_DOCKERFILE = Dockerfile.generated
+QEMU_VERSION = v2.11.0
+VERSION = $(shell cat VERSION)
+#DOCKER_USER = test
+#DOCKER_PASS = test
 ifeq ($(REPO),)
   REPO = freenom
 endif
-ifeq ($(TRAVIS_BRANCH),)
+ifeq ($(CIRCLE_TAG),)
 	TAG = latest
 else
-  ifeq ($(TRAVIS_BRANCH), master)
-    TAG = latest
-  else
-    TAG = $(TRAVIS_BRANCH)
-	endif
+	TAG = $(CIRCLE_TAG)
 endif
 
 all: $(ARCHITECTURES)
 
 $(ARCHITECTURES):
-	@mkdir -p $(TMP_DIR)
-	@curl -L -o $(TMP_DIR)/qemu-$@-static.tar.gz $(QEMU_STATIC)/qemu-$(strip $(call convert_archs,$@))-static.tar.gz
-	@tar xzf $(TMP_DIR)/qemu-$@-static.tar.gz -C $(TMP_DIR)
-	@sed -e "s|<IMAGE>|$@/$(IMAGE)|g" \
-		-e "s|<ARCH>|$@|g" \
-		-e "s|<QEMU>|COPY $(TMP_DIR)/qemu-$(strip $(call convert_archs,$@))-static /usr/bin/qemu-$(strip $(call convert_archs,$@))-static|g" \
-		Dockerfile.generic > $(TMP_DOCKERFILE)
-	@sed -i -e "s|amd64/$(IMAGE)|$(IMAGE)|g" $(TMP_DOCKERFILE)
 	@docker run --rm --privileged $(MULTIARCH) --reset
-	@docker build --build-arg BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ") \
-		--build-arg VCS_REF=$(shell git rev-parse --short HEAD) \
-		--build-arg VCS_URL=$(shell git config --get remote.origin.url) \
-		--build-arg VERSION="1.0" \
-		-f $(TMP_DOCKERFILE) -t $(REPO):$@-$(TAG) .
-	@rm -rf $(TMP_DIR) $(TMP_DOCKERFILE)
+	@docker build \
+			--build-arg IMAGE=$@/$(IMAGE_TARGET) \
+			--build-arg QEMU=$(strip $(call qemuarch,$@)) \
+			--build-arg QEMU_VERSION=$(QEMU_VERSION) \
+			--build-arg ARCH=$@ \
+			--build-arg BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ") \
+			--build-arg VCS_REF=$(shell git rev-parse --short HEAD) \
+			--build-arg VCS_URL=$(shell git config --get remote.origin.url) \
+			--build-arg VERSION=$(VERSION) \
+			-t $(REPO):linux-$@-$(TAG) .
 
 push:
 	@docker login -u $(DOCKER_USER) -p $(DOCKER_PASS)
-	$(foreach arch,$(ARCHITECTURES) amd64, docker push $(REPO):$(arch)-$(TAG);)
+	@$(foreach arch,$(ARCHITECTURES), docker push $(REPO):linux-$(arch)-$(TAG);)
 	@docker logout
 
-clean:
-	@rm -rf $(TMP_DIR) $(TMP_DOCKERFILE)
+manifest:
+	@wget -O docker https://6582-88013053-gh.circle-artifacts.com/1/work/build/docker-linux-amd64
+	@chmod +x docker
+	@./docker login -u $(DOCKER_USER) -p $(DOCKER_PASS)
+	@./docker manifest create $(REPO):$(TAG) \
+			$(foreach arch,$(ARCHITECTURES), $(REPO):linux-$(arch)-$(TAG)) --amend
+	@$(foreach arch,$(ARCHITECTURES), ./docker manifest annotate \
+			$(REPO):$(TAG) $(REPO):linux-$(arch)-$(TAG) \
+			--os linux $(strip $(call convert_variants,$(arch)));)
+	@./docker manifest push $(REPO):$(TAG)
+	@./docker logout
+	@rm -f docker
 
-define convert_archs
-	$(shell echo $(1) | sed -e "s|armhf|arm|g" -e "s|amd64|x86_64|g")
+test:
+	@$(foreach arch,$(ARCHITECTURES), docker run -it --rm \
+			$(REPO):linux-$(arch)-$(TAG) --version; )
+
+# Needed convertions for different architecture naming schemes
+# Convert qemu archs to naming scheme of https://github.com/multiarch/qemu-user-static/releases
+define qemuarch
+	$(shell echo $(1) | sed -e "s|arm32.*|arm|g" -e "s|arm64.*|aarch64|g" -e "s|amd64|x86_64|g")
+endef
+# Convert Docker manifest entries according to https://docs.docker.com/registry/spec/manifest-v2-2/#manifest-list-field-descriptions
+define convert_variants
+	$(shell echo $(1) | sed -e "s|amd64|--arch amd64|g" -e "s|i386|--arch 386|g" -e "s|arm32v5|--arch arm --variant v5|g" -e "s|arm32v6|--arch arm --variant v6|g" -e "s|arm32v7|--arch arm --variant v7|g" -e "s|arm64v8|--arch arm64 --variant v8|g" -e "s|ppc64le|--arch ppc64le|g" -e "s|s390x|--arch s390x|g")
 endef

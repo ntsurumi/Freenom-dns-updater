@@ -2,13 +2,13 @@ version: '2'
 
 services:
   freenom:
-    image: whatever4711/freenom:arm64v8-latest
+    image: whatever4711/freenom
     restart: always
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile.arm64v8
     volumes:
-      - /home/marcel/.container/config/freenom.yml:/etc/freenom.yml
+      - ./freenom.yml:/etc/freenom.yml
     command: ["process", "-c", "-t", "3600", "/etc/freenom.yml"]
 #    deploy:
 #      restart_policy:
